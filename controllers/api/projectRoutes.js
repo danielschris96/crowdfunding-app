@@ -1,6 +1,20 @@
 const router = require('express').Router();
 const { Project } = require('../../models');
 
+//Get all Projects ROuter
+
+router.get('/', async (req, res) => {
+  try {
+    const allProject = await Project.getAll({});
+    let project = allProject.map((ele) => {
+      ele.get({ plain: true });
+    });
+    //I need to make a "homepage view" and send our sthing to the homepage.
+    res.render('homepage', project);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
 router.post('/', async (req, res) => {
   try {
     const newProject = await Project.create({
